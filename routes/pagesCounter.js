@@ -1,20 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var connection = require("../database/connection");
-var con = connection();
-var initDb = con.initDb;
-var db = con.db;
-console.log(con);
-
+var db = require("../database/db");
 
 router.get('/', function (req, res) {
-    // try to initialize the db on every request if it's not already
-    // initialized.
-    if (!db) {
-      initDb(function (err) { });
-    }
-    if (db) {
-      var col = db.collection('counts');
+    if (db.get()) {
+      var col = db.get().collection('counts');
       // Create a document with request IP and current time of request
       col.insert({ ip: req.ip, date: Date.now() });
       col.count(function (err, count) {
@@ -29,13 +19,8 @@ router.get('/', function (req, res) {
   });
   
   router.get('/pagecount', function (req, res) {
-    // try to initialize the db on every request if it's not already
-    // initialized.
-    if (!db) {
-      initDb(function (err) { });
-    }
-    if (db) {
-      db.collection('counts').count(function (err, count) {
+    if (db.get()) {
+      db.get().collection('counts').count(function (err, count) {
         var result = { pageCount: count };
         res.json(result);
         //res.send('{ pageCount: ' + count + '}');
