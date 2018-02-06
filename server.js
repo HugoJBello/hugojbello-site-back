@@ -1,23 +1,27 @@
 //  OpenShift sample Node application
 var express = require('express'),
-    app     = express(),
-    morgan  = require('morgan');
+  app = express(),
+  morgan = require('morgan');
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load();
+}
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-Object.assign=require('object-assign')
+Object.assign = require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
-    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
-    mongoURLLabel = "";
+  ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
+  mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+  mongoURLLabel = "";
 
-if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
+if (mongoURL == null) {
   /*
   var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
       mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'],
@@ -26,14 +30,19 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
       mongoPassword = process.env[mongoServiceName + '_PASSWORD']
       mongoUser = process.env[mongoServiceName + '_USER'];
   */
-    var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
-      mongoHost = process.env['MONGODB_HOST_MLAB'],
-      mongoPort = process.env['MONGODB_PORT_MLAB'],
-      mongoDatabase = process.env['MONGODB_DATABASE_MLAB'],
-      mongoPassword = process.env['MONGODB_PASSWORD_MLAB']
-      mongoUser = process.env['MONGODB_USER_MLAB'];
-  
-  console.log(mongoHost);
+    var mongoHost = process.env['MONGODB_HOST_MLAB'],
+    mongoPort = process.env['MONGODB_PORT_MLAB'],
+    mongoDatabase = process.env['MONGODB_DATABASE_MLAB'],
+    mongoPassword = process.env['MONGODB_PASSWORD_MLAB'],
+    mongoUser = process.env['MONGODB_USER_MLAB'];
+
+  if (process.env.NODE_ENV !== 'production') {
+    var mongoHost = process.env.MONGODB_HOST_MLAB;
+    var mongoPort = process.env.MONGODB_PORT_MLAB;
+    var mongoDatabase = process.env.MONGODB_DATABASE_MLAB;
+    var mongoPassword = process.env.MONGODB_PASSWORD_MLAB;
+    var mongoUser = process.env.MONGODB_USER_MLAB;
+  }
 
   if (mongoHost && mongoPort && mongoDatabase) {
     mongoURLLabel = mongoURL = 'mongodb://';
@@ -42,20 +51,21 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
     }
     // Provide UI label that excludes user id and pw
     mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
-    mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
+    mongoURL += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
+    console.log(mongoURL);
 
   }
 }
 var db = null,
-    dbDetails = new Object();
+  dbDetails = new Object();
 
-var initDb = function(callback) {
+var initDb = function (callback) {
   if (mongoURL == null) return;
 
   var mongodb = require('mongodb');
   if (mongodb == null) return;
 
-  mongodb.connect(mongoURL, function(err, conn) {
+  mongodb.connect(mongoURL, function (err, conn) {
     if (err) {
       callback(err);
       return;
@@ -74,20 +84,20 @@ app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   if (!db) {
-    initDb(function(err){});
+    initDb(function (err) { });
   }
   if (db) {
     var col = db.collection('counts');
     // Create a document with request IP and current time of request
-    col.insert({ip: req.ip, date: Date.now()});
-    col.count(function(err, count){
+    col.insert({ ip: req.ip, date: Date.now() });
+    col.count(function (err, count) {
       if (err) {
-        console.log('Error running count. Message:\n'+err);
+        console.log('Error running count. Message:\n' + err);
       }
-      res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
+      res.render('index.html', { pageCountMessage: count, dbInfo: dbDetails });
     });
   } else {
-    res.render('index.html', { pageCountMessage : null});
+    res.render('index.html', { pageCountMessage: null });
   }
 });
 
@@ -95,31 +105,31 @@ app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
   if (!db) {
-    initDb(function(err){});
+    initDb(function (err) { });
   }
   if (db) {
-    db.collection('counts').count(function(err, count ){
-      var result = {pageCount: count};
+    db.collection('counts').count(function (err, count) {
+      var result = { pageCount: count };
       res.json(result);
       //res.send('{ pageCount: ' + count + '}');
     });
   } else {
-    res.json({pagecount:-1})
+    res.json({ pagecount: -1 })
     //res.send('{ pageCount: -1 }');
   }
 });
 
 // error handling
-app.use(function(err, req, res, next){
+app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('Something bad happened!');
 });
 
-initDb(function(err){
-  console.log('Error connecting to Mongo. Message:\n'+err);
+initDb(function (err) {
+  console.log('Error connecting to Mongo. Message:\n' + err);
 });
 
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
-module.exports = app ;
+module.exports = app;
