@@ -4,6 +4,8 @@ var connection = require("../database/connection");
 var initDb = connection.initDb;
 var db = connection.db;
 
+initDb();
+
 router.get('/', function (req, res) {
     // try to initialize the db on every request if it's not already
     // initialized.

@@ -68,4 +68,5 @@ connection.initDb = initDb;
 initDb(function (err) {
   console.log('Error connecting to Mongo. Message:\n' + err);
 });
+
 module.exports = connection;
