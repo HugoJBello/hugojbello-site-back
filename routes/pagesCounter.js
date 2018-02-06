@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var connection = require("../database/connection");
-var initDb = connection.initDb;
-var db = connection.db;
+var con = connection();
+var initDb = con.initDb;
+var db = con.db;
+console.log(con);
 
-initDb();
 
 router.get('/', function (req, res) {
     // try to initialize the db on every request if it's not already
