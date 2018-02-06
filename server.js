@@ -2,7 +2,11 @@
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
-    
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
@@ -30,11 +34,6 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
       mongoUser = process.env['MONGODB_USER_MLAB'];
   
   console.log(mongoHost);
-  console.log(mongoPort);
-  console.log(mongoDatabase);
-  console.log(mongoPassword);
-  console.log(mongoUser);
-
 
   if (mongoHost && mongoPort && mongoDatabase) {
     mongoURLLabel = mongoURL = 'mongodb://';
@@ -100,10 +99,13 @@ app.get('/pagecount', function (req, res) {
   }
   if (db) {
     db.collection('counts').count(function(err, count ){
-      res.send('{ pageCount: ' + count + '}');
+      var result = {pageCount: count};
+      res.json(result);
+      //res.send('{ pageCount: ' + count + '}');
     });
   } else {
-    res.send('{ pageCount: -1 }');
+    res.json({pagecount:-1})
+    //res.send('{ pageCount: -1 }');
   }
 });
 
