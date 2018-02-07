@@ -9,7 +9,7 @@ router.get('/count_pages', function (req, res) {
     if (err) throw err;
     Count.count({}, (err, count) => {
       if (err) throw err;
-      res.render('index.html', { pageCountMessage: count, dbInfo: dbDetails });
+      res.render('index.html', { pageCountMessage: count, dbInfo: undefined });
     });
   });
 });
