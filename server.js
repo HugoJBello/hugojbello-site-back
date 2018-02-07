@@ -3,6 +3,9 @@ var express = require('express'),
   app = express(),
   morgan = require('morgan');
 
+var mongoose = require('mongoose');
+var pageCounter = require('./routes/pageCounter');
+
 //var pageCounter = require('./routes/pageCounter');
 
 if (process.env.NODE_ENV !== 'production') {
@@ -51,6 +54,10 @@ if (mongoURL == null) {
 
   }
 }
+
+mongoose.connect(mongoURL);
+app.use("/",pageCounter);
+
 var db = null,
   dbDetails = new Object();
 
