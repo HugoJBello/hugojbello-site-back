@@ -58,31 +58,6 @@ if (mongoURL == null) {
 mongoose.connect(mongoURL);
 app.use("/", pageCounter);
 
-var db = null,
-  dbDetails = new Object();
-
-var initDb = function (callback) {
-  if (mongoURL == null) return;
-
-  var mongodb = require('mongodb');
-  if (mongodb == null) return;
-
-  mongodb.connect(mongoURL, function (err, conn) {
-    if (err) {
-      callback(err);
-      return;
-    }
-
-    db = conn;
-    dbDetails.databaseName = db.databaseName;
-    dbDetails.url = mongoURLLabel;
-    dbDetails.type = 'MongoDB';
-
-    console.log('Connected to MongoDB at: %s', mongoURL);
-  });
-};
-
-
 app.get('/pagecount', function (req, res) {
   res.json({ pagecount: -1 })
   //res.send('{ pageCount: -1 }');
