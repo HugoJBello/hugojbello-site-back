@@ -3,7 +3,7 @@ var router = express.Router();
 var db = require("../database/db");
 var Count = require("../models/count");
 
-router.get('/count_pages', function (req, res) {
+router.get('/', function (req, res) {
   var entry = new Count ({ ip: req.ip, date: Date.now()});
   entry.save((err) => {
     if (err) throw err;
