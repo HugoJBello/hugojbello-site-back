@@ -18,7 +18,7 @@ describe('Basic routes tests', function() {
         })
 
     })
-    
+    /*
     it('GET to /entry_view should return 200', function(done){
         chai.request(reqServer)
         .get('/entries/entry_view/test')
@@ -28,7 +28,7 @@ describe('Basic routes tests', function() {
         })
     })
     
-/*
+
     it('Post to /entry_editor should return 200', function(done){
         chai.request(reqServer)
         .post('/editor/entry_editor')
