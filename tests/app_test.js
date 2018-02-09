@@ -15,7 +15,8 @@ describe('Basic routes tests', function() {
         .end(function(err, res) {
             res.should.have.status(200);
             done();
-        });
+        })
+
     })
     
     it('GET to /entry_view should return 200', function(done){
@@ -23,9 +24,8 @@ describe('Basic routes tests', function() {
         .get('/entries/entry_view/test')
         .end(function(err, res) {
             res.should.have.status(200);
-            
-        });
-        done();
+            done();
+        })
     })
     
 
@@ -42,9 +42,8 @@ describe('Basic routes tests', function() {
         )
         .end(function(err, res) {
             res.should.have.status(200);
-           
+            done();
         })
-        done();
     })
 
     
