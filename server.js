@@ -37,7 +37,7 @@ if (mongoURL == null) {
     mongoUser = process.env['MONGODB_USER_MLAB'];
 
   if (process.env.NODE_ENV !== 'production') {
-    var mongoHost = process.env.MONGODB_HOST_MLAB;
+    var mongoHost = process.env.MONGODB_HOST_MLAB; 
     var mongoPort = process.env.MONGODB_PORT_MLAB;
     var mongoDatabase = process.env.MONGODB_DATABASE_MLAB;
     var mongoPassword = process.env.MONGODB_PASSWORD_MLAB;
@@ -77,4 +77,4 @@ app.use(function (err, req, res, next) {
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
 
-module.exports = app;
+module.exports = app;  
