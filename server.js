@@ -59,7 +59,7 @@ if (mongoURL == null) {
 
 mongoose.connect(mongoURL);
 app.use("/", pageCounter);
-//app.use("/entries", entryView);
+app.use("/entries", entryView);
 //app.use("/editor", entryEditor);
 
 
