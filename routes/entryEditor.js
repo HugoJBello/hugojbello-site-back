@@ -32,6 +32,7 @@ router.post('/entry_editor', function(req, res) {
     entryHistory.created_at = new Date();
     PageEntry.create(entry, function(err,raw){
       if (err) throw err;
+      console.log("page created");
       return res.json({result:"entry added"});
     });
     PageEntryHistory.create(entryHistory, function(err,raw){
@@ -43,6 +44,7 @@ router.post('/entry_editor', function(req, res) {
       entryHistory.title=entry.title;
       PageEntryHistory.create(entryHistory, function(err,raw){
         if (err) throw err;
+        console.log("page created");
       });
       return res.json({result:"entry added"});
     });
@@ -57,6 +59,7 @@ function updateCategory (category_name){
                                           'created_at': new Date()});
       Category.create(category_new, function(err,raw){
         if (err) throw err;
+        console.log("category created created");
         });
     } else {
       countEntriesWithCategory (category_name, function(count){
@@ -64,6 +67,7 @@ function updateCategory (category_name){
         category.updated_at= new Date();
         Category.update({'_id':category._id}, category, function(err,raw){
           if (err) throw err;
+          console.log("category updated");
         });
       });
     }
