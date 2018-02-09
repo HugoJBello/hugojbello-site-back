@@ -9,7 +9,7 @@ var Category = require('../models/category');
 
 
 router.post('/entry_editor', function(req, res) {
-  /*
+
   var categories = req.body.categoriesSemicolom.split(';');
   for (var i=0; i<categories.length;i++){
     if (categories[i]) updateCategory(categories[i]);
@@ -50,7 +50,6 @@ router.post('/entry_editor', function(req, res) {
       return res.json({result:"entry added"});
     });
   }
-  */
 });
 
 function updateCategory (category_name){
