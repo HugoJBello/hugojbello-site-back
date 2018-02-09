@@ -5,6 +5,8 @@ var express = require('express'),
 
 var mongoose = require('mongoose');
 var pageCounter = require('./routes/pageCounter');
+var entryView = require('./routes/entryView');
+var entryEditor = require('./routes/entryEditor');
 
 //var pageCounter = require('./routes/pageCounter');
 
@@ -57,6 +59,9 @@ if (mongoURL == null) {
 
 mongoose.connect(mongoURL);
 app.use("/", pageCounter);
+app.use("/entries", entryView);
+app.use("/editor", entryEditor);
+
 
 app.get('/pagecount', function (req, res) {
   res.json({ pagecount: -1 })
