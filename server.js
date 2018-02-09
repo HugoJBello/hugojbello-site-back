@@ -59,8 +59,8 @@ if (mongoURL == null) {
 
 mongoose.connect(mongoURL);
 app.use("/", pageCounter);
-//app.use("/entries", entryView);
-//app.use("/editor", entryEditor);
+app.use("/entries", entryView);
+app.use("/editor", entryEditor);
 
 
 app.get('/pagecount', function (req, res) {

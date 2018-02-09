@@ -25,6 +25,8 @@ router.post('/entry_editor', function(req, res) {
                                           'content':req.body.content,
                                           'updated_at': new Date(),
                                           'categories':categories});
+  console.log(entry);
+                                       
   if (req.body.new =='true'){
     entry.created_at = new Date();
     entryHistory.created_at = new Date();
