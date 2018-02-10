@@ -38,7 +38,7 @@ describe('Basic routes tests', function() {
             'title':'title test entry',
             'content':'test content',
             'categoriesSemicolom':'cat_test1;cat_test2',
-            'new':true} 
+            'new':'true'} 
         )
         .end(function(err, res) {
             res.should.have.status(200);
