@@ -7,6 +7,8 @@ var mongoose = require('mongoose');
 var pageCounter = require('./routes/pageCounter');
 var entryView = require('./routes/entryView');
 var entryEditor = require('./routes/entryEditor');
+const cors = require('cors');
+app.use(cors());
 
 //var pageCounter = require('./routes/pageCounter');
 
