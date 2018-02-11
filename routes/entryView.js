@@ -20,6 +20,18 @@ router.get('/entry_view/:entry_name',
     });
 });
 
+router.get('/entry_list',
+ function(req, res) {
+    PageEntry.find({}, function(err, entries){
+      if (err) throw err;
+      if (!entries){
+        return res.json({error: "No page Found"})
+      } else {
+        return res.json(entries);
+      }
+    });
+});
+
 function manageInternarReferences(mdEntry){
   regex= '/\[(.+?)\]/g';
   var links = mdEntry.match(/\[(.*?)\]\((.*?)\)/g);
