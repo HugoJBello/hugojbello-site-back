@@ -39,7 +39,22 @@ describe('Basic routes tests', function() {
             'title':'title test entry4',
             'content':loremIpsum,
             'categoriesSemicolom':'cat_test1;cat_test2',
-            'new':'true'} 
+            'new':'false'} 
+        )
+        .end(function(err, res) {
+            res.should.have.status(200);
+            done();
+        })
+    })
+
+    var image = "+MZScHeJQ9Cz5dfxnEmIMHWMZyZYnYx8Rrhj0HbtfGUanv5w3UHUyADbiGsKJxeM1yV4uGwBS7cYlAec1w0AX6xg2A1O854UF8OS6PAP1MtzkeFnrNlD41U8XFeGrp1fn3jRMUs8sqS61umSS2rR2NDhppjZ4OvnOWBAq6X+sQNkhKkfZOdYsZOpz8fWIQb6wQ/GchVCgfZko4PMDg1DSumausG6o+2E6wKLLjKReUaHEQXKJV8h85XEKN4p/WEBvTHmmJ/IN178YJVgrGmfOScAuBPp+sggGA7/wC1kgbDiacbGABOcCLHVRpMuBQh5Xn4xqARF03pwkJT23LhxGLiSGp8mCVWDrzPf3iwp4C3nDSg2VUfNwgDvm6vrIiFJvp8ZHIdjoFx8BX0OH0+8TVii3GAKKc2kjz7dYqUCdsuMOm2hrr+h//Z";
+
+    it('Post to /upload should return 200', function(done){
+        chai.request(reqServer)
+        .post('/files/upload')
+        .send(
+            {'filename':'test_im',
+            'base64':image} 
         )
         .end(function(err, res) {
             res.should.have.status(200);

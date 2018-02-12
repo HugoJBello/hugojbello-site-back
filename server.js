@@ -7,6 +7,8 @@ var mongoose = require('mongoose');
 var pageCounter = require('./routes/pageCounter');
 var entryView = require('./routes/entryView');
 var entryEditor = require('./routes/entryEditor');
+var files = require('./routes/files');
+
 const cors = require('cors');
 app.use(cors());
 
@@ -63,7 +65,7 @@ mongoose.connect(mongoURL);
 app.use("/", pageCounter);
 app.use("/entries", entryView);
 app.use("/editor", entryEditor);
-
+app.use("/files", files);
 
 app.get('/pagecount', function (req, res) {
   res.json({ pagecount: -1 })
