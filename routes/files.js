@@ -28,12 +28,15 @@ router.get('/image/:filename',
       if (!file){
         return res.json({error: "No page Found"})
       } else {
-        file[0].base64=file[0].base64.replace("data:image/jpeg;base64,","");
-        console.log(file[0].base64);
-        var bitmap = new Buffer(file[0].base64.replace("base64,",""), 'base64');
-        res.contentType('image/jpeg');
-        res.end(bitmap, "binary");
-        //return res.json(file);
+        if(file[0].base64){
+          if (file[0].base64.includes(",")) file[0].base64=file[0].base64.split(",")[1];
+          console.log(file[0].base64);
+          var bitmap = new Buffer(file[0].base64.replace("base64,",""), 'base64');
+          res.contentType('image/jpeg');
+          res.end(bitmap, "binary");
+          //return res.json(file);
+        }
+        
       }
     });
 });
