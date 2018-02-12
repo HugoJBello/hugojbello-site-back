@@ -8,11 +8,17 @@ var renameUtils = require('../utils/renameUtils')
 router.post('/upload',
  //isAuthenticated,
  function(req, res) {
-   file = new File({'filename':req.body.filename , 'base64':req.body.base64, 'created_at': new Date()});
+   if(req.body){
+    file = new File({'filename':req.body.filename , 'base64':req.body.base64, 'created_at': new Date()});
     File.create(file, function(err){
-      if (err) throw err;
+      if (err) {
+        res.json({result:"error"});
+        throw err;
+      }
         return res.json({result:"file uploaded successfully"});    
     });
+   }
+  
 });
 
 router.get('/image/:filename',
@@ -22,8 +28,9 @@ router.get('/image/:filename',
       if (!file){
         return res.json({error: "No page Found"})
       } else {
-        console.log(file);
-        var bitmap = new Buffer(file[0].base64, 'base64');
+        file[0].base64=file[0].base64.replace("data:image/jpeg;base64,","");
+        console.log(file[0].base64);
+        var bitmap = new Buffer(file[0].base64.replace("base64,",""), 'base64');
         res.contentType('image/jpeg');
         res.end(bitmap, "binary");
         //return res.json(file);
