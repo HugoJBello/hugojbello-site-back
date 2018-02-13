@@ -15,7 +15,7 @@ router.post('/entry_editor', function (req, res) {
     if (categories[i]) updateCategory(categories[i]);
   }
 
-  var entry = new PageEntry({//'_id': req.body._id,
+  var entry = new PageEntry({'_id': req.body._id,
     'name': req.body.name,
     'title': req.body.title,
     'content': req.body.content,
@@ -48,10 +48,11 @@ router.post('/entry_editor', function (req, res) {
     }
 
   } else {
+    console.log("::::::")
     PageEntry.findByIdAndUpdate(req.body._id, entry, function (err, raw) {
       if (err) throw err;
       entryHistory.title = entry.title;
-
+      console.log("----");
       PageEntryHistory.create(entryHistory, function (err, raw) {
         if (err) throw err;
         console.log("page created");
