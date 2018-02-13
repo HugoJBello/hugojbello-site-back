@@ -63,6 +63,7 @@ router.post('/entry_editor', function (req, res) {
 });
 
 function updateCategory(category_name) {
+  category_name=category_name.trim();
   Category.findOne({ 'name': category_name }, function (err, category) {
     if (err) throw err;
     if (!category) {
