@@ -9,8 +9,8 @@ var Category = require('../models/category');
 
 
 router.post('/entry_editor', function(req, res) {
-
-  var categories = req.body.categoriesSemicolom.split(';');
+  var categories =[];
+  if (req.body.categoriesSemicolom) categories = req.body.categoriesSemicolom.split(';');
   for (var i=0; i<categories.length;i++){
     if (categories[i]) updateCategory(categories[i]);
   }
@@ -36,17 +36,24 @@ router.post('/entry_editor', function(req, res) {
       console.log("page created");
       return res.json({result:"entry added"});
     });
-    PageEntryHistory.create(entryHistory, function(err,raw){
-      if (err) throw err;
-    });
+    try{
+     // PageEntryHistory.create(entryHistory, function(err,raw){
+        //if (err) throw err;
+      //});
+    } catch (err){
+      console.log(err);
+    }
+    
   } else  {
     PageEntry.findByIdAndUpdate(req.body._id, entry, function(err,raw){
       if (err) throw err;
       entryHistory.title=entry.title;
+      /*
       PageEntryHistory.create(entryHistory, function(err,raw){
         if (err) throw err;
         console.log("page created");
       });
+      */
       return res.json({result:"entry added"});
     });
   }
