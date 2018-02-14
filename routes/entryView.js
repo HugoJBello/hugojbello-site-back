@@ -22,7 +22,7 @@ router.get('/entry_view/:entry_name',
 
 router.get('/entry_list',
  function(req, res) {
-    PageEntry.find({}, function(err, entries){
+    PageEntry.find({}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
