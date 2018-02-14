@@ -21,6 +21,18 @@ router.post('/upload',
   
 });
 
+router.get('/images/:limit',
+ function(req, res) {
+    File.find({}).sort({created_at: -1}).limit(req.param.limit).exec(function(err, files){
+      if (err) throw err;
+      if (!files){
+        return res.json({error: "No page Found"})
+      } else {
+        return res.json(files);
+      }
+    });
+});
+
 router.get('/image/:filename',
  function(req, res) {
     File.find({'filename': req.params.filename}, function(err, file){
