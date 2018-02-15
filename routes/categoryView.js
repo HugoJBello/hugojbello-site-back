@@ -36,7 +36,7 @@ router.get('/category_list',
   });
 
 function countMembers(categories, callback) {
-  let result = [];
+  var result = [];
   for (var category of categories) {
     PageEntry.count({ categories: category.name }, function (err, count) {
       var entry = { category: categories, count: count };
