@@ -33,6 +33,26 @@ router.get('/images/:limit',
     });
 });
 
+router.get('/file_remove/:file_name',
+ //isAuthenticated,
+ function(req, res) {
+    File.findOne({'filename':req.params.file_name}, function(err, file){
+      if (err) throw err;
+      if (!file){
+        return res.json({result: "No file Found"})
+      } else {
+        File.deleteOne(file,function(err){
+          if (err) {
+            throw err;
+            return res.json({result: "error deleting"})
+          } else {
+            return res.json({result: "file deleted"})
+          }
+        });
+      }
+    });
+});
+
 router.get('/image/:filename',
  function(req, res) {
     File.find({'filename': req.params.filename}, function(err, file){

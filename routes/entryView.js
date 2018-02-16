@@ -20,6 +20,27 @@ router.get('/entry_view/:entry_name',
     });
 });
 
+router.get('/entry_remove/:entry_name',
+ //isAuthenticated,
+ function(req, res) {
+    PageEntry.findOne({'name':req.params.entry_name}, function(err, entry){
+      if (err) throw err;
+      if (!entry){
+        return res.json({result: "No page Found"})
+      } else {
+        PageEntry.deleteOne(entry,function(err){
+          if (err) {
+            throw err;
+            return res.json({result: "error deleting"})
+          } else {
+            return res.json({result: "page deleted"})
+          }
+        });
+      }
+    });
+});
+
+
 router.get('/entry_list',
  function(req, res) {
     PageEntry.find({}).sort({created_at: -1}).exec(function(err, entries){
