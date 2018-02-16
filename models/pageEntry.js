@@ -9,6 +9,7 @@ var schema = new Schema(
   updated_at: Date,
   author: String,
   content:String,
+  hidden:Boolean,
   categories: [String],
   edited_by:String},
   { collection : 'PageEntries' });

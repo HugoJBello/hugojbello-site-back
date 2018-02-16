@@ -25,7 +25,7 @@ router.get('/category_list',
   //isAuthenticated,
   function (req, res) {
     console.log(req.params.name);
-    PageEntry.find({'categories':req.params.name}).sort({created_at: -1}).exec( function (err, entries) {
+    PageEntry.find({hidden:false,'categories':req.params.name}).sort({created_at: -1}).exec( function (err, entries) {
       if (err) throw err;
       if (!entries) {
         return res.json({ error: "No page Found" })
