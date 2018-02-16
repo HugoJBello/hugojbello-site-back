@@ -16,14 +16,7 @@ router.post('/entry_editor', function (req, res) {
   if (name) {
   console.log(hidden);
   if (req.body.categoriesSemicolom) categories = req.body.categoriesSemicolom.split(';');
-  if (!hidden && categories) {
-    for (var i = 0; i < categories.length; i++) {
-      console.log(rename.cleanCategoryName(categories[i]));
-      if (categories[i]) categoryUtils.updateCategory(rename.cleanCategoryName(categories[i]));
-    }
-  }
-
-
+   
   var entry = new PageEntry({
     '_id': req.body._id,
     'name': req.body.name,
@@ -63,6 +56,7 @@ router.post('/entry_editor', function (req, res) {
       } else {
         return res.json({ result: "entry already exists and can not be created again" });
       }
+      updateCategories(hidden,categories)
     });
   } else {
     console.log("::::::")
@@ -73,9 +67,11 @@ router.post('/entry_editor', function (req, res) {
       PageEntryHistory.create(entryHistory, function (err, raw) {
         if (err) throw err;
         console.log("page created");
+        updateCategories(hidden,categories)
       });
 
       return res.json({ result: "entry added" });
+      updateCategories(hidden,categories)
     });
   }
   
@@ -85,5 +81,11 @@ router.post('/entry_editor', function (req, res) {
   }
 });
 
-
+function updateCategories(hidden,categories){
+  if (!hidden && categories) {
+    for (var i = 0; i < categories.length; i++) {
+      if (categories[i]) categoryUtils.updateCategory(categories[i]);
+    }
+  }
+}
 module.exports = router;

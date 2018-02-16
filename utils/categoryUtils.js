@@ -9,6 +9,7 @@ function countEntriesWithCategory(category_name, callback) {
     PageEntry.count({hidden:false, 'categories': category_name })
       .exec(function (err, count) {
         if (err) throw err;
+        console.log("-------" + count);
         return callback(count);
       });
   }
@@ -21,7 +22,8 @@ exports.updateCategory =function (category_name) {
       if (!category) {
         var category_new = new Category({
           'name': category_name,
-          'created_at': new Date()
+          'created_at': new Date(),
+          'number_of_entries':1
         });
         Category.create(category_new, function (err, raw) {
           if (err) throw err;
