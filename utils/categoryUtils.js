@@ -5,11 +5,11 @@ var Category = require('../models/category');
 
 
   
-function countEntriesWithCategory(category_name, callback) {
-    PageEntry.count({hidden:false, 'categories': category_name })
+function countEntriesWithCategory(name, callback) {
+    PageEntry.count({hidden:false, 'categories': name })
       .exec(function (err, count) {
         if (err) throw err;
-        console.log("-------" + count);
+        if (count===0) deleteCategory(name);
         return callback(count);
       });
   }
@@ -39,5 +39,10 @@ exports.updateCategory =function (category_name) {
           });
         });
       }
+    });
+  }
+
+  function deleteCategory(name){
+    Category.deleteOne({ 'name': name },function(err){
     });
   }
