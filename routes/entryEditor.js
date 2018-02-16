@@ -14,7 +14,6 @@ router.post('/entry_editor', function (req, res) {
   var hidden = req.body.hidden;
   var name = req.body.name;
   if (name) {
-  console.log(hidden);
   if (req.body.categoriesSemicolom) categories = req.body.categoriesSemicolom.split(';');
    
   var entry = new PageEntry({
@@ -34,7 +33,6 @@ router.post('/entry_editor', function (req, res) {
     'categories': categories,
     'hidden': hidden
   });
-  console.log(entry);
 
   if (req.body.new == 'true') {
     PageEntry.findOne({ name: name }, function (err, existingEntry) {
@@ -49,6 +47,7 @@ router.post('/entry_editor', function (req, res) {
         try {
           PageEntryHistory.create(entryHistory, function (err, raw) {
             if (err) throw err;
+            updateCategories(hidden,categories);
           });
         } catch (err) {
           console.log(err);
@@ -56,14 +55,11 @@ router.post('/entry_editor', function (req, res) {
       } else {
         return res.json({ result: "entry already exists and can not be created again" });
       }
-      updateCategories(hidden,categories)
     });
   } else {
-    console.log("::::::")
     PageEntry.findByIdAndUpdate(req.body._id, entry, function (err, raw) {
       if (err) throw err;
       entryHistory.title = entry.title;
-      console.log("----");
       PageEntryHistory.create(entryHistory, function (err, raw) {
         if (err) throw err;
         console.log("page created");
