@@ -10,6 +10,7 @@ var entryEditor = require('./routes/entryEditor');
 var files = require('./routes/files');
 var categoryView = require('./routes/categoryView');
 var checkJwt = require('./auth/checkJwt');
+var config = require('./config/config');
 
 const cors = require('cors');
 app.use(cors());
