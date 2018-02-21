@@ -70,7 +70,7 @@ app.use("/", pageCounter);
 app.use("/entries", entryView);
 app.use("/editor", entryEditor);
 app.use("/files", files);
-app.use("/images", files);
+app.use("/images", images);
 app.use("/categories", categoryView);
 
 if (config.useAuth0){
