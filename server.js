@@ -66,6 +66,14 @@ if (mongoURL == null) {
 }
 
 mongoose.connect(mongoURL);
+if (config.useAuth0){
+  console.log("Using  auth0 for endpoins /editor/* and /files/*");
+  app.use('/editor/',checkJwt);
+  app.use('/files/',checkJwt);
+} else {
+  console.log("not using auth0");
+}
+
 app.use("/", pageCounter);
 app.use("/entries", entryView);
 app.use("/editor", entryEditor);
@@ -73,10 +81,7 @@ app.use("/files", files);
 app.use("/images", images);
 app.use("/categories", categoryView);
 
-if (config.useAuth0){
-  app.use('/editor/',checkJwt);
-  app.use('/files/',checkJwt);
-}
+
 
 app.get('/pagecount', function (req, res) {
   res.json({ pagecount: -1 })
