@@ -8,6 +8,7 @@ var pageCounter = require('./routes/pageCounter');
 var entryView = require('./routes/entryView');
 var entryEditor = require('./routes/entryEditor');
 var files = require('./routes/files');
+var images = require('./routes/images');
 var categoryView = require('./routes/categoryView');
 var checkJwt = require('./auth/checkJwt');
 var config = require('./config/config');
@@ -69,10 +70,12 @@ app.use("/", pageCounter);
 app.use("/entries", entryView);
 app.use("/editor", entryEditor);
 app.use("/files", files);
+app.use("/images", files);
 app.use("/categories", categoryView);
 
 if (config.useAuth0){
   app.use('/editor/',checkJwt);
+  app.use('/files/',checkJwt);
 }
 
 app.get('/pagecount', function (req, res) {
