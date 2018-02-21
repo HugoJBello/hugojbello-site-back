@@ -9,6 +9,7 @@ var entryView = require('./routes/entryView');
 var entryEditor = require('./routes/entryEditor');
 var files = require('./routes/files');
 var categoryView = require('./routes/categoryView');
+var checkJwt = require('./auth/checkJwt');
 
 const cors = require('cors');
 app.use(cors());
@@ -69,6 +70,9 @@ app.use("/editor", entryEditor);
 app.use("/files", files);
 app.use("/categories", categoryView);
 
+if (config.useAuth0){
+  app.use('/editor/',checkJwt);
+}
 
 app.get('/pagecount', function (req, res) {
   res.json({ pagecount: -1 })
