@@ -21,6 +21,7 @@ router.post('/entry_editor', function (req, res) {
     'name': req.body.name,
     'title': req.body.title,
     'content': req.body.content,
+    'blog_version':req.body.blog_version,
     'updated_at': new Date(),
     'categories': categories,
     'hidden': hidden
@@ -29,6 +30,7 @@ router.post('/entry_editor', function (req, res) {
     'name': req.body.name,
     'title': req.body.title,
     'content': req.body.content,
+    'blog_version':req.body.blog_version,
     'updated_at': new Date(),
     'categories': categories,
     'hidden': hidden

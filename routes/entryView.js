@@ -47,9 +47,10 @@ router.get('/entry_remove/:entry_name',
     });
 });
 
-router.get('/entry_list',
+router.get('/entry_list/:version',
  function(req, res) {
-    PageEntry.find({hidden:false}).sort({created_at: -1}).exec(function(err, entries){
+   if (req.param.version=="blog"){
+    PageEntry.find({hidden:false,blog_version:true}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
@@ -57,11 +58,23 @@ router.get('/entry_list',
         return res.json(entries);
       }
     });
+   } else {
+    PageEntry.find({hidden:false,blog_version:false}).sort({created_at: -1}).exec(function(err, entries){
+      if (err) throw err;
+      if (!entries){
+        return res.json({error: "No page Found"})
+      } else {
+        return res.json(entries);
+      }
+    });
+   }
+    
 });
 
-router.get('/entry_list_hidden',
+router.get('/entry_list_hidden/:version',
  function(req, res) {
-    PageEntry.find({hidden:true}).sort({created_at: -1}).exec(function(err, entries){
+  if (req.param.version=="blog"){
+    PageEntry.find({hidden:true,blog_version:true}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
@@ -69,11 +82,22 @@ router.get('/entry_list_hidden',
         return res.json(entries);
       }
     });
+  } else {
+    PageEntry.find({hidden:true,blog_version:false}).sort({created_at: -1}).exec(function(err, entries){
+      if (err) throw err;
+      if (!entries){
+        return res.json({error: "No page Found"})
+      } else {
+        return res.json(entries);
+      }
+    });
+  }
 });
 
-router.get('/entry_list_all',
+router.get('/entry_list_all/:version',
  function(req, res) {
-    PageEntry.sort({created_at: -1}).exec(function(err, entries){
+  if (req.param.version=="blog"){
+    PageEntry.sort({created_at: -1, blog_version:true}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
@@ -81,6 +105,16 @@ router.get('/entry_list_all',
         return res.json(entries);
       }
     });
+  } else {
+    PageEntry.sort({created_at: -1, blog_version:false}).exec(function(err, entries){
+      if (err) throw err;
+      if (!entries){
+        return res.json({error: "No page Found"})
+      } else {
+        return res.json(entries);
+      }
+    });
+  }
 });
 
 function manageInternarReferences(mdEntry){
