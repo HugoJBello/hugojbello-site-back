@@ -10,7 +10,8 @@ router.get('/entry_view/:version/:entry_name',
  //isAuthenticated,
  function(req, res) {
     var isBlog = (req.param.version=="blog");
-    PageEntry.findOne({'name':req.params.entry_name, blog_version:isBlog}, function(err, entry){
+    var appId = req.param.version;
+    PageEntry.findOne({'name':req.params.entry_name, app_id:appId}, function(err, entry){
       if (err) throw err;
       if (!entry){
         return res.json({error: "No page Found"})
@@ -29,11 +30,11 @@ router.get('/entry_remove/:version/:entry_name',
  function(req, res) 
  {
    var isBlog = (req.param.version=="blog");
-   var app_id = req.params.version;
-    PageEntry.findOne({'name':req.params.entry_name,blog_version:isBlog}, function(err, entry){
+   var appId = req.params.version;
+    PageEntry.findOne({'name':req.params.entry_name,app_id:appId}, function(err, entry){
       var categories = entry.categories;
       for (var i = 0; i < categories.length; i++) {
-        if (categories[i]) categoryUtils.updateCategory(categories[i],isBlog);
+        if (categories[i]) categoryUtils.updateCategory(categories[i],appId);
       }
       if (err) throw err;
       if (!entry){
@@ -56,7 +57,7 @@ router.get('/entry_list/:version',
   var isBlog = (req.param.version=="blog");
   var appId = req.param.version;
 
-    PageEntry.find({hidden:false,blog_version:isBlog}).sort({created_at: -1}).exec(function(err, entries){
+    PageEntry.find({hidden:false,app_id:appId}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
@@ -69,10 +70,10 @@ router.get('/entry_list/:version',
 router.get('/entry_list_hidden/:version',
  function(req, res) {
   var isBlog = (req.param.version=="blog");
-  var app_id = req.params.version;
+  var appId = req.params.version;
 
   
-    PageEntry.find({hidden:true,blog_version:isBlog}).sort({created_at: -1}).exec(function(err, entries){
+    PageEntry.find({hidden:true,app_id:appId}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
@@ -85,8 +86,8 @@ router.get('/entry_list_hidden/:version',
 router.get('/entry_list_all/:version',
  function(req, res) {
   var isBlog = (req.param.version=="blog");
-
-    PageEntry.sort({created_at: -1, blog_version:isBlog}).exec(function(err, entries){
+  var appId = req.param.version
+    PageEntry.sort({created_at: -1, app_id:appId}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})

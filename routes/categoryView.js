@@ -9,7 +9,8 @@ router.get('/category_list/:version/',
   //isAuthenticated,
   function (req, res) {
     var isBlog = (req.param.version==="blog");
-      Category.find({blog_version:isBlog}).sort({updated_at: -1}).exec(function (err, categories) {
+    var appId = req.param.version;
+      Category.find({app_id:appId}).sort({updated_at: -1}).exec(function (err, categories) {
         if (err) throw err;
         if (!categories) {
           return res.json({ error: "No page Found" })
@@ -26,7 +27,8 @@ router.get('/category_list/:version/',
   //isAuthenticated,
   function (req, res) {
     var isBlog = (req.param.version==="blog");
-      PageEntry.find({hidden:false,'categories':req.params.name, blog_version:isBlog}).sort({created_at: -1}).exec( function (err, entries) {
+    var appId = req.param.version;
+      PageEntry.find({hidden:false,'categories':req.params.name, app_id:appId}).sort({created_at: -1}).exec( function (err, entries) {
         if (err) throw err;
         if (!entries) {
           return res.json({ error: "No page Found" })
