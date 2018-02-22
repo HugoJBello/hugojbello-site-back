@@ -47,10 +47,33 @@ router.get('/entry_remove/:entry_name',
     });
 });
 
-
 router.get('/entry_list',
  function(req, res) {
     PageEntry.find({hidden:false}).sort({created_at: -1}).exec(function(err, entries){
+      if (err) throw err;
+      if (!entries){
+        return res.json({error: "No page Found"})
+      } else {
+        return res.json(entries);
+      }
+    });
+});
+
+router.get('/entry_list_hidden',
+ function(req, res) {
+    PageEntry.find({hidden:true}).sort({created_at: -1}).exec(function(err, entries){
+      if (err) throw err;
+      if (!entries){
+        return res.json({error: "No page Found"})
+      } else {
+        return res.json(entries);
+      }
+    });
+});
+
+router.get('/entry_list_all',
+ function(req, res) {
+    PageEntry.sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
