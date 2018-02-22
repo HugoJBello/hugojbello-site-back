@@ -30,7 +30,7 @@ router.get('/entry_remove/:version/:entry_name',
  function(req, res) 
  {
    var isBlog = (req.param.version=="blog");
-   var appId = req.params.version;
+   var appId = req.param.version;
     PageEntry.findOne({'name':req.params.entry_name,app_id:appId}, function(err, entry){
       var categories = entry.categories;
       for (var i = 0; i < categories.length; i++) {
@@ -70,7 +70,7 @@ router.get('/entry_list/:version',
 router.get('/entry_list_hidden/:version',
  function(req, res) {
   var isBlog = (req.param.version=="blog");
-  var appId = req.params.version;
+  var appId = req.param.version;
 
   
     PageEntry.find({hidden:true,app_id:appId}).sort({created_at: -1}).exec(function(err, entries){

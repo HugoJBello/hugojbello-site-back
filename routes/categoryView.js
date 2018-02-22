@@ -28,7 +28,7 @@ router.get('/category_list/:version/',
   function (req, res) {
     var isBlog = (req.param.version==="blog");
     var appId = req.param.version;
-      PageEntry.find({hidden:false,'categories':req.params.name, app_id:appId}).sort({created_at: -1}).exec( function (err, entries) {
+      PageEntry.find({hidden:false,'categories':req.param.name, app_id:appId}).sort({created_at: -1}).exec( function (err, entries) {
         if (err) throw err;
         if (!entries) {
           return res.json({ error: "No page Found" })
