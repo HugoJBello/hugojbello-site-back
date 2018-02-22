@@ -8,8 +8,8 @@ var router = express.Router();
 router.get('/category_list/:version/',
   //isAuthenticated,
   function (req, res) {
-    if (req.params.version){
-      Category.find({}).sort({updated_at: -1, blog_version:req.param.version}).exec(function (err, categories) {
+    var isBlog = (req.param.version=="blog");
+      Category.find({}).sort({updated_at: -1, blog_version:isBlog}).exec(function (err, categories) {
         if (err) throw err;
         if (!categories) {
           return res.json({ error: "No page Found" })
@@ -20,45 +20,20 @@ router.get('/category_list/:version/',
           res.json(categories);
         }
       });
-    } else {
-      Category.find({}).sort({updated_at: -1}).exec(function (err, categories) {
-        if (err) throw err;
-        if (!categories) {
-          return res.json({ error: "No page Found" })
-        } else {
-          // countMembers(categories, function(result){
-          //   res.json(result)
-          // });
-          res.json(categories);
-        }
-      });
-    }
-    
   });
 
   router.get('/entries_in_category/:version/:name',
   //isAuthenticated,
   function (req, res) {
-    if (req.params.version=="blog"){
-      PageEntry.find({hidden:false,'categories':req.params.name, blog_version:true}).sort({created_at: -1}).exec( function (err, entries) {
+    var isBlog = (req.param.version=="blog");
+      PageEntry.find({hidden:false,'categories':req.params.name, blog_version:isBlog}).sort({created_at: -1}).exec( function (err, entries) {
         if (err) throw err;
         if (!entries) {
           return res.json({ error: "No page Found" })
         } else {
           res.json(entries);
         }
-      });
-    } else {
-      PageEntry.find({hidden:false,'categories':req.params.name, blog_version:false}).sort({created_at: -1}).exec( function (err, entries) {
-        if (err) throw err;
-        if (!entries) {
-          return res.json({ error: "No page Found" })
-        } else {
-          res.json(entries);
-        }
-      });
-    }
-    
+      });  
   });
 
 function countMembers(categories, callback) {

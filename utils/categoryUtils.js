@@ -5,11 +5,11 @@ var Category = require('../models/category');
 
 
   
-function countEntriesWithCategory(name, callback) {
-    PageEntry.count({hidden:false, 'categories': name })
+function countEntriesWithCategory(name, blog_version, callback) {
+    PageEntry.count({hidden:false, 'categories': name, blog_version:blog_version })
       .exec(function (err, count) {
         if (err) throw err;
-        if (count===0) deleteCategory(name);
+        if (count===0) deleteCategory(name, blog_version);
         return callback(count);
       });
   }
@@ -31,7 +31,7 @@ exports.updateCategory =function (category_name,blog_version) {
           console.log("category created created");
         });
       } else {
-        countEntriesWithCategory(category_name, function (count) {
+        countEntriesWithCategory(category_name, blog_version, function (count) {
           category.number_of_entries = count;
           category.updated_at = new Date();
           Category.update({ '_id': category._id }, category, function (err, raw) {
@@ -43,7 +43,7 @@ exports.updateCategory =function (category_name,blog_version) {
     });
   }
 
-  function deleteCategory(name){
-    Category.deleteOne({ 'name': name },function(err){
+  function deleteCategory(name,blog_version){
+    Category.deleteOne({ 'name': name ,blog_version},function(err){
     });
   }
