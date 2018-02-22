@@ -8,8 +8,8 @@ var router = express.Router();
 router.get('/category_list/:version/',
   //isAuthenticated,
   function (req, res) {
-    var isBlog = (req.param.version=="blog");
-      Category.find({}).sort({updated_at: -1, blog_version:isBlog}).exec(function (err, categories) {
+    var isBlog = (req.param.version==="blog");
+      Category.find({blog_version:isBlog}).sort({updated_at: -1}).exec(function (err, categories) {
         if (err) throw err;
         if (!categories) {
           return res.json({ error: "No page Found" })
@@ -25,7 +25,7 @@ router.get('/category_list/:version/',
   router.get('/entries_in_category/:version/:name',
   //isAuthenticated,
   function (req, res) {
-    var isBlog = (req.param.version=="blog");
+    var isBlog = (req.param.version==="blog");
       PageEntry.find({hidden:false,'categories':req.params.name, blog_version:isBlog}).sort({created_at: -1}).exec( function (err, entries) {
         if (err) throw err;
         if (!entries) {
@@ -35,17 +35,5 @@ router.get('/category_list/:version/',
         }
       });  
   });
-
-function countMembers(categories, callback) {
-  var result = [];
-  for (var category of categories) {
-    PageEntry.count({ categories: category.name, blog_version:category.blog_version}, function (err, count) {
-      var entry = { category: categories, count: count };
-      console.log(entry);
-      result.push(entry);
-    });
-  }
-  callback(result);
-}
 
 module.exports = router;
