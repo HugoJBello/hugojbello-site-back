@@ -10,6 +10,7 @@ var schema = new Schema(
   author: String,
   content:String,
   hidden:Boolean,
+  app_id:String,
   blog_version:Boolean,
   categories: [String],
   edited_by:String},

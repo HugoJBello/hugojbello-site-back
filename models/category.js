@@ -9,6 +9,7 @@ var CathegorySchema = new Schema(
   number_of_entries: String,
   created_at: Date,
   updated_at: Date,
+  app_id: String,
   blog_version:Boolean}, 
   { collection : 'Categories' });
 

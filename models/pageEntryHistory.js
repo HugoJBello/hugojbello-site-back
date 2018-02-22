@@ -9,6 +9,7 @@ var schema = new Schema(
   updated_at: Date,
   author: String,
   content:String,
+  app_id:String,
   categories: [String],
   edited_by:String,
   version:Number},
