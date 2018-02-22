@@ -80,7 +80,7 @@ router.post('/entry_editor', function (req, res) {
   }
 });
 
-function updateCategories(hidden,categories){
+function updateCategories(hidden,categories,blog_version){
   if (!hidden && categories) {
     for (var i = 0; i < categories.length; i++) {
       if (categories[i]) categoryUtils.updateCategory(categories[i],blog_version);
