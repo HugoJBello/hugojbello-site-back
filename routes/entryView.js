@@ -23,13 +23,15 @@ router.get('/entry_view/:entry_name',
     });
 });
 
-router.get('/entry_remove/:entry_name',
+router.get('/entry_remove/:version/:entry_name',
  //isAuthenticated,
- function(req, res) {
-    PageEntry.findOne({'name':req.params.entry_name}, function(err, entry){
+ function(req, res) 
+ {
+   var isBlog = (req.param.version=="blog");
+    PageEntry.findOne({'name':req.params.entry_name,blog_version:isBlog}, function(err, entry){
       var categories = entry.categories;
       for (var i = 0; i < categories.length; i++) {
-        if (categories[i]) categoryUtils.updateCategory(categories[i]);
+        if (categories[i]) categoryUtils.updateCategory(categories[i],isBlog);
       }
       if (err) throw err;
       if (!entry){
@@ -49,32 +51,24 @@ router.get('/entry_remove/:entry_name',
 
 router.get('/entry_list/:version',
  function(req, res) {
-   if (req.param.version=="blog"){
-    PageEntry.find({hidden:false,blog_version:true}).sort({created_at: -1}).exec(function(err, entries){
+  var isBlog = (req.param.version=="blog");
+
+    PageEntry.find({hidden:false,blog_version:isBlog}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
       } else {
         return res.json(entries);
       }
-    });
-   } else {
-    PageEntry.find({hidden:false,blog_version:false}).sort({created_at: -1}).exec(function(err, entries){
-      if (err) throw err;
-      if (!entries){
-        return res.json({error: "No page Found"})
-      } else {
-        return res.json(entries);
-      }
-    });
-   }
-    
+    }); 
 });
 
 router.get('/entry_list_hidden/:version',
  function(req, res) {
-  if (req.param.version=="blog"){
-    PageEntry.find({hidden:true,blog_version:true}).sort({created_at: -1}).exec(function(err, entries){
+  var isBlog = (req.param.version=="blog");
+
+  
+    PageEntry.find({hidden:true,blog_version:isBlog}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
@@ -82,22 +76,13 @@ router.get('/entry_list_hidden/:version',
         return res.json(entries);
       }
     });
-  } else {
-    PageEntry.find({hidden:true,blog_version:false}).sort({created_at: -1}).exec(function(err, entries){
-      if (err) throw err;
-      if (!entries){
-        return res.json({error: "No page Found"})
-      } else {
-        return res.json(entries);
-      }
-    });
-  }
 });
 
 router.get('/entry_list_all/:version',
  function(req, res) {
-  if (req.param.version=="blog"){
-    PageEntry.sort({created_at: -1, blog_version:true}).exec(function(err, entries){
+  var isBlog = (req.param.version=="blog");
+
+    PageEntry.sort({created_at: -1, blog_version:isBlog}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         return res.json({error: "No page Found"})
@@ -105,16 +90,6 @@ router.get('/entry_list_all/:version',
         return res.json(entries);
       }
     });
-  } else {
-    PageEntry.sort({created_at: -1, blog_version:false}).exec(function(err, entries){
-      if (err) throw err;
-      if (!entries){
-        return res.json({error: "No page Found"})
-      } else {
-        return res.json(entries);
-      }
-    });
-  }
 });
 
 function manageInternarReferences(mdEntry){

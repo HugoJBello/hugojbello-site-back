@@ -14,7 +14,7 @@ function countEntriesWithCategory(name, callback) {
       });
   }
   
-exports.updateCategory =function (category_name) {
+exports.updateCategory =function (category_name,blog_version) {
     
     category_name=rename.cleanCategoryName(category_name.trim());
     Category.findOne({ 'name': category_name }, function (err, category) {
@@ -23,7 +23,8 @@ exports.updateCategory =function (category_name) {
         var category_new = new Category({
           'name': category_name,
           'created_at': new Date(),
-          'number_of_entries':1
+          'number_of_entries':1,
+          'blog_version':blog_version
         });
         Category.create(category_new, function (err, raw) {
           if (err) throw err;

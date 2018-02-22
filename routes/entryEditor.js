@@ -13,6 +13,7 @@ router.post('/entry_editor', function (req, res) {
   var categories = req.body.categories;
   var hidden = req.body.hidden;
   var name = req.body.name;
+  var blog_version =req.body.blog_version;
   if (name) {
   if (req.body.categoriesSemicolom) categories = req.body.categoriesSemicolom.split(';');
    
@@ -21,7 +22,7 @@ router.post('/entry_editor', function (req, res) {
     'name': req.body.name,
     'title': req.body.title,
     'content': req.body.content,
-    'blog_version':req.body.blog_version,
+    'blog_version':blog_version,
     'updated_at': new Date(),
     'categories': categories,
     'hidden': hidden
@@ -30,14 +31,14 @@ router.post('/entry_editor', function (req, res) {
     'name': req.body.name,
     'title': req.body.title,
     'content': req.body.content,
-    'blog_version':req.body.blog_version,
+    'blog_version':blog_version,
     'updated_at': new Date(),
     'categories': categories,
     'hidden': hidden
   });
 
   if (req.body.new == 'true') {
-    PageEntry.findOne({ name: name }, function (err, existingEntry) {
+    PageEntry.findOne({ name: name ,blog_version:blog_version}, function (err, existingEntry) {
       if (!existingEntry) {
         entry.created_at = new Date();
         entryHistory.created_at = new Date();
@@ -49,7 +50,7 @@ router.post('/entry_editor', function (req, res) {
         try {
           PageEntryHistory.create(entryHistory, function (err, raw) {
             if (err) throw err;
-            updateCategories(hidden,categories);
+            updateCategories(hidden,categories,blog_version);
           });
         } catch (err) {
           console.log(err);
@@ -65,11 +66,11 @@ router.post('/entry_editor', function (req, res) {
       PageEntryHistory.create(entryHistory, function (err, raw) {
         if (err) throw err;
         console.log("page created");
-        updateCategories(hidden,categories)
+        updateCategories(hidden,categories,blog_version)
       });
 
       return res.json({ result: "entry added" });
-      updateCategories(hidden,categories)
+      updateCategories(hidden,categories,blog_version)
     });
   }
   
@@ -82,7 +83,7 @@ router.post('/entry_editor', function (req, res) {
 function updateCategories(hidden,categories){
   if (!hidden && categories) {
     for (var i = 0; i < categories.length; i++) {
-      if (categories[i]) categoryUtils.updateCategory(categories[i]);
+      if (categories[i]) categoryUtils.updateCategory(categories[i],blog_version);
     }
   }
 }
