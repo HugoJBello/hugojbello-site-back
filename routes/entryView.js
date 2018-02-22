@@ -6,10 +6,11 @@ var renameUtils = require('../utils/renameUtils')
 var categoryUtils = require ("../utils/categoryUtils");
 
 
-router.get('/entry_view/:entry_name',
+router.get('/entry_view/:version/:entry_name',
  //isAuthenticated,
  function(req, res) {
-    PageEntry.findOne({'name':req.params.entry_name}, function(err, entry){
+    var isBlog = (req.param.version=="blog");
+    PageEntry.findOne({'name':req.params.entry_name, blog_version:isBlog}, function(err, entry){
       if (err) throw err;
       if (!entry){
         return res.json({error: "No page Found"})
