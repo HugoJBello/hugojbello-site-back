@@ -75,7 +75,7 @@ if (config.useAuth0){
 }
 
 app.use("/", pageCounter);
-app.use("/entries", entryView);
+app.use("/entries", entryView); 
 app.use("/editor", entryEditor);
 app.use("/files", files);
 app.use("/images", images);
