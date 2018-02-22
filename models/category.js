@@ -9,7 +9,7 @@ var CathegorySchema = new Schema(
   number_of_entries: String,
   created_at: Date,
   updated_at: Date,
-  blog_verision:Boolean}, 
+  blog_version:Boolean}, 
   { collection : 'Categories' });
 
 // the schema is useless so far
