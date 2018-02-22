@@ -9,8 +9,8 @@ var categoryUtils = require ("../utils/categoryUtils");
 router.get('/entry_view/:version/:entry_name',
  //isAuthenticated,
  function(req, res) {
-    var isBlog = (req.param.version=="blog");
-    var appId = req.param.version;
+    var isBlog = (req.params.version=="blog");
+    var appId = req.params.version;
     PageEntry.findOne({'name':req.params.entry_name, app_id:appId}, function(err, entry){
       if (err) throw err;
       if (!entry){
@@ -29,8 +29,8 @@ router.get('/entry_remove/:version/:entry_name',
  //isAuthenticated,
  function(req, res) 
  {
-   var isBlog = (req.param.version=="blog");
-   var appId = req.param.version;
+   var isBlog = (req.params.version=="blog");
+   var appId = req.params.version;
     PageEntry.findOne({'name':req.params.entry_name,app_id:appId}, function(err, entry){
       var categories = entry.categories;
       for (var i = 0; i < categories.length; i++) {
@@ -54,13 +54,13 @@ router.get('/entry_remove/:version/:entry_name',
 
 router.get('/entry_list/:version',
  function(req, res) {
-  var isBlog = (req.param.version=="blog");
-  var appId = req.param.version;
+  var isBlog = (req.params.version=="blog");
+  var appId = req.params.version;
 
     PageEntry.find({hidden:false,app_id:appId}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
-        return res.json({error: "No page Found"})
+        return res.json({error: "No page Found for " + appId + " "})
       } else {
         return res.json(entries);
       }
@@ -69,8 +69,8 @@ router.get('/entry_list/:version',
 
 router.get('/entry_list_hidden/:version',
  function(req, res) {
-  var isBlog = (req.param.version=="blog");
-  var appId = req.param.version;
+  var isBlog = (req.params.version=="blog");
+  var appId = req.params.version;
 
   
     PageEntry.find({hidden:true,app_id:appId}).sort({created_at: -1}).exec(function(err, entries){
@@ -85,8 +85,8 @@ router.get('/entry_list_hidden/:version',
 
 router.get('/entry_list_all/:version',
  function(req, res) {
-  var isBlog = (req.param.version=="blog");
-  var appId = req.param.version
+  var isBlog = (req.params.version=="blog");
+  var appId = req.params.version
     PageEntry.sort({created_at: -1, app_id:appId}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
