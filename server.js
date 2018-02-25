@@ -6,6 +6,7 @@ var express = require('express'),
 var mongoose = require('mongoose');
 var pageCounter = require('./routes/pageCounter');
 var entryView = require('./routes/entryView');
+var entryViewHidden = require('./routes/entryViewHidden');
 var entryEditor = require('./routes/entryEditor');
 var files = require('./routes/files');
 var images = require('./routes/images');
@@ -70,12 +71,15 @@ if (config.useAuth0){
   console.log("Using  auth0 for endpoins /editor/* and /files/*");
   app.use('/editor/',checkJwt);
   app.use('/files/',checkJwt);
+  app.use('/entries_hidden/',checkJwt);
+
 } else {
   console.log("not using auth0");
 }
 
 app.use("/", pageCounter);
 app.use("/entries", entryView); 
+app.use("/entries_hidden", entryViewHidden); 
 app.use("/editor", entryEditor);
 app.use("/files", files);
 app.use("/images", images);
