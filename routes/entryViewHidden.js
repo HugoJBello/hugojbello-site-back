@@ -25,9 +25,8 @@ router.get('/entry_list_hidden/:version',
 
 router.get('/entry_list_all/:version',
  function(req, res) {
-  var isBlog = (req.params.version=="blog");
   var appId = req.params.version
-    PageEntry.sort({created_at: -1, app_id:appId}).exec(function(err, entries){
+    PageEntry.find({created_at: -1, app_id:appId}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
         logRequest(req);
