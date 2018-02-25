@@ -4,6 +4,7 @@ var md = require("marked");
 var router = express.Router();
 var renameUtils = require('../utils/renameUtils')
 var categoryUtils = require ("../utils/categoryUtils");
+var logRequest = require("../utils/logRequest");
 
 
 router.get('/entry_view/:version/:entry_name',
@@ -14,12 +15,14 @@ router.get('/entry_view/:version/:entry_name',
     PageEntry.findOne({'name':req.params.entry_name, app_id:appId}, function(err, entry){
       if (err) throw err;
       if (!entry){
+        logRequest(req);
         return res.json({error: "No page Found"})
       } else {
         if(entry.content){
           var referencedContents =  manageInternarReferences(entry.content);
           var contentHtml = md(referencedContents);
         }
+        logRequest(req);
         return res.json({entry :  entry,contentHtml : contentHtml});
       }
     });
@@ -38,13 +41,16 @@ router.get('/entry_remove/:version/:entry_name',
       }
       if (err) throw err;
       if (!entry){
+        logRequest(req);
         return res.json({result: "No page Found"})
       } else {
         PageEntry.deleteOne(entry,function(err){
           if (err) {
             throw err;
+            logRequest(req);
             return res.json({result: "error deleting"})
           } else {
+            logRequest(req);
             return res.json({result: "page deleted"})
           }
         });
@@ -60,8 +66,10 @@ router.get('/entry_list/:version',
     PageEntry.find({hidden:false,app_id:appId}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
+        logRequest(req);
         return res.json({error: "No page Found for " + appId + " "})
       } else {
+        logRequest(req);
         return res.json(entries);
       }
     }); 
@@ -76,8 +84,10 @@ router.get('/entry_list_hidden/:version',
     PageEntry.find({hidden:true,app_id:appId}).sort({created_at: -1}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
+        logRequest(req);
         return res.json({error: "No page Found"})
       } else {
+        logRequest(req);
         return res.json(entries);
       }
     });
@@ -90,8 +100,10 @@ router.get('/entry_list_all/:version',
     PageEntry.sort({created_at: -1, app_id:appId}).exec(function(err, entries){
       if (err) throw err;
       if (!entries){
+        logRequest(req);
         return res.json({error: "No page Found"})
       } else {
+        logRequest(req);
         return res.json(entries);
       }
     });

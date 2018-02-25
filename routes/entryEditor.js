@@ -6,6 +6,8 @@ var md = require("marked");
 var router = express.Router();
 var Category = require('../models/category');
 var categoryUtils = require("../utils/categoryUtils");
+var logRequest = require("../utils/logRequest");
+
 var rename = require("../utils/renameUtils");
 
 
@@ -48,6 +50,7 @@ router.post('/entry_editor', function (req, res) {
         PageEntry.create(entry, function (err, raw) {
           if (err) throw err;
           console.log("page created");
+          logRequest(req);
           return res.json({ result: "entry added" });
         });
         try {
@@ -59,6 +62,7 @@ router.post('/entry_editor', function (req, res) {
           console.log(err);
         }
       } else {
+        logRequest(req);
         return res.json({ result: "entry already exists and can not be created again" });
       }
     });
@@ -71,13 +75,14 @@ router.post('/entry_editor', function (req, res) {
         console.log("page created");
         updateCategories(hidden,categories,appId)
       });
-
+      logRequest(req);
       return res.json({ result: "entry added" });
       updateCategories(hidden,categories,appId)
     });
   }
   
   } else {
+    logRequest(req);
     return res.json({ result: "entry without name" });
 
   }

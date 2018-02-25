@@ -3,6 +3,7 @@ var Category = require('../models/category');
 var PageEntry = require('../models/pageEntry');
 var md = require("marked");
 var router = express.Router();
+var logRequest = require("../utils/logRequest");
 
 
 router.get('/category_list/:version/',
@@ -13,11 +14,13 @@ router.get('/category_list/:version/',
       Category.find({app_id:appId}).sort({updated_at: -1}).exec(function (err, categories) {
         if (err) throw err;
         if (!categories) {
+          logRequest(req);
           return res.json({ error: "No page Found" })
         } else {
           // countMembers(categories, function(result){
           //   res.json(result)
           // });
+          logRequest(req);
           res.json(categories);
         }
       });
@@ -31,8 +34,10 @@ router.get('/category_list/:version/',
       PageEntry.find({hidden:false,'categories':req.params.name, app_id:appId}).sort({created_at: -1}).exec( function (err, entries) {
         if (err) throw err;
         if (!entries) {
+          logRequest(req);
           return res.json({ error: "No page Found" })
         } else {
+          logRequest(req);
           res.json(entries);
         }
       });  
