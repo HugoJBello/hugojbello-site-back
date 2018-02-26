@@ -28,16 +28,18 @@ router.get('/image/:filename',
 
 router.get('/images_list_page/:page',
  function(req, res) {
-    numberOfPages(function(pages){
+    numberOfPages(function(pages, totalItems){
       findFiles(req.params.page, function(fileList){
-        res.json({files:fileList, pages:pages});
+        res.json({files:fileList, pages:pages, totalItems:totalItems});
         });
     });
 });
 
 function numberOfPages (callback){
   File.count({}, function( err, count){
-    return callback(Math.floor(count/perPage)+1);
+    var pages = Math.floor(count/perPage)+1;
+    var totalItems = count; 
+    return callback(pages, totalItems);
   });
 }
 
