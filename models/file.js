@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var FileSchema = new Schema(
-  {filename:{ type: String, required: true, unique: true },
+  {filename:{ type: String, required: true},
   base64:String,
   created_at: Date},
   { collection : 'Files' });
