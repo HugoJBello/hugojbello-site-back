@@ -26,16 +26,17 @@ router.get('/image/:filename',
     });
 });
 
-router.get('/images_list_page/:page',
+router.get('/images_list_page/:page/:perPage',
  function(req, res) {
-    numberOfPages(function(pages, totalItems){
+   perPage=req.params.perPage;
+    numberOfPages(function(pages, totalItems,perPage){
       findFiles(req.params.page, function(fileList){
         res.json({files:fileList, pages:pages, totalItems:totalItems});
         });
     });
 });
 
-function numberOfPages (callback){
+function numberOfPages (callback,perPage){
   File.count({}, function( err, count){
     var pages = Math.floor(count/perPage)+1;
     var totalItems = count; 
@@ -43,7 +44,7 @@ function numberOfPages (callback){
   });
 }
 
-function findFiles (page, callback){
+function findFiles (page, callback,perPage){
   page = page-1;
 
   File.find({})
