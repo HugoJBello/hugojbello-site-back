@@ -28,14 +28,14 @@ router.get('/images_list_page/:page/:perPage',
  function(req, res) {
    perPage=req.params.perPage;
    console.log(perPage);
-    numberOfPages(function(pages, totalItems,perPage){
-      findFiles(req.params.page, function(fileList){
+    numberOfPages(perPage,function(pages, totalItems){
+      findFiles(req.params.page,perPage, function(fileList){
         res.json({files:fileList, pages:pages, totalItems:totalItems});
         });
     });
 });
 
-function numberOfPages (callback,perPage){
+function numberOfPages (perPage,callback){
   File.count({}, function( err, count){
     var pages = Math.floor(count/perPage)+1;
     var totalItems = count; 
@@ -43,7 +43,7 @@ function numberOfPages (callback,perPage){
   });
 }
 
-function findFiles (page, callback,perPage){
+function findFiles (page,perPage,callback){
   page = page-1;
   console.log(perPage);
 
