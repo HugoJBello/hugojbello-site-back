@@ -2,7 +2,6 @@ var express = require('express');
 var File   =require('../models/file');
 var router = express.Router();
 var logRequest = require("../utils/logRequest");
-var perPage = 10;
 
 router.get('/image/:filename',
  function(req, res) {
