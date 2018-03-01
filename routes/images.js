@@ -48,7 +48,7 @@ function findFiles (page,perPage,callback){
   console.log(perPage);
 
   File.find({})
-  .limit(perPage)
+  .limit(parseInt(perPage))
   .skip(perPage * page)
   .sort({created_at:-1})
   .select('filename created_at')
