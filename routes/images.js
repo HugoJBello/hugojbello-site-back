@@ -14,7 +14,6 @@ router.get('/image/:filename',
       } else {
         if(file[0].base64){
           if (file[0].base64.includes(",")) file[0].base64=file[0].base64.split(",")[1];
-          console.log(file[0].base64);
           var bitmap = new Buffer(file[0].base64.replace("base64,",""), 'base64');
           logRequest(req);
           res.contentType('image/jpeg');
