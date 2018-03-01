@@ -27,6 +27,7 @@ router.get('/image/:filename',
 router.get('/images_list_page/:page/:perPage',
  function(req, res) {
    perPage=req.params.perPage;
+   console.log(perPage);
     numberOfPages(function(pages, totalItems,perPage){
       findFiles(req.params.page, function(fileList){
         res.json({files:fileList, pages:pages, totalItems:totalItems});
@@ -44,6 +45,7 @@ function numberOfPages (callback,perPage){
 
 function findFiles (page, callback,perPage){
   page = page-1;
+  console.log(perPage);
 
   File.find({})
   .limit(perPage)
